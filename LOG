@@ -36,3 +36,12 @@ These limits can be compared to SUSY 2016 ones
 > Expected 97.5%: r < 10.9437
 
 **2016 SUSY limit is better than TOP/SUSY 2015 combination**
+
+
+Die 16 Aug 2016 23:59:41 CEST
+Working on combine output formating. Created dedicated Makefile and adjusted parseLimit.py script
+
+It is possible to parse combine output using 
+```
+make -B  format FMT=txt INPUT=result/16-08-12-18-25/combine.asymptotic.out
+```

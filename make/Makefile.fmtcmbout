@@ -1,12 +1,16 @@
 FMT = txt
 
-ifndef FMT
-$(error Conversion format was not specified! Terminating...)
-endif
-
 INPUT = 
 ifndef INPUT
 $(error Input file was not specified! Terminating...)
+endif
+
+
+#if output file name is not specified leave the variable empty 
+#else prepend file name with '-j' key and pass it to the parse command
+OUTPUTJSON = 
+ifdef OUTPUTJSON
+override OUTPUTJSON := -j $(OUTPUTJSON)
 endif
 
 PARSELIMITS = ./util/parseLimits.py
@@ -15,13 +19,7 @@ format: $(INPUT)
 	@date +"%y-%m-%d-%H-%M"
 	@echo "Formatting combine output: $(FMT)"
 	@echo "Using input file: $(INPUT)"
-	@if [ "$(FMT)" == "tex" ]; then\
-		echo "TEX";\
-	fi
-	@if [ "$(FMT)" == "txt" ]; then\
-		echo "TEXT";\
-		$(PARSELIMITS) -i $(INPUT);\
-	fi
+	@$(PARSELIMITS) -i $(INPUT) -f $(FMT) $(OUTPUTJSON)
 
 .PHONY: format
 

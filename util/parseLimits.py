@@ -43,34 +43,31 @@ def get_lim(lim_str, xsec, name, format='txt', out_filename=None):
     exp_sp1 = d["exp_84.0"]*xsec
 
     json_array = json.dumps(d)
-    print json_array
 
     if 'txt' in format:
 	print "Limits for %s" % name
     	print "  Obs: %.3f %s" % (obs, unit)
     	print "  Exp: %.3f + %.4f - %.4f %s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
-    elif 'tex' in format:
-	print "Stub!!!"
-    elif 'json' in format:
+    if 'tex' in format:
+        print "Limits for %s" % name
+        print "  Obs: %.3f \%s" % (obs, unit)
+        print "  Exp: $%.3f^{+%.4f}_{-%.4f}$ \%s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
+    if 'json' in format:
 	if out_filename is not None:
 		with open(out_filename, 'w') as outfile:
     			json.dump(d, outfile, sort_keys=True, indent=4)
-    else:
-	error_msg = 'Format ' + format + ' not recognised! Terminating...'
-	sys.exit(error_msg)
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Combine limit output parser')
 	parser.add_argument('-i','--input', help='Input file name',required=True)
 	parser.add_argument('-f','--format', help='Output format', required=False)
-	parser.add_argument('-o','--output',help='Output file name', required=False)
+	parser.add_argument('-j','--jsonoutput',help='Output json file name', required=False)
 	args = parser.parse_args()
 	return args
 
 def main():
 	args = parse_args()
 	
-
 	lim_tttt = ""
 
 	with open( args.input ) as f:
@@ -79,7 +76,11 @@ def main():
 				print(line.strip())
 				lim_tttt += line
 
-	get_lim(lim_tttt, xsec_tttt, "TTTT", args.format, args.output)
+	if not any(fmt in args.format for fmt in ['txt','tex','json']):
+		error_msg = 'Format ' + args.format + ' not recognised! Terminating...'
+		sys.exit(error_msg)
+
+	get_lim(lim_tttt, xsec_tttt, "TTTT", args.format, args.jsonoutput)
 
 
 if __name__ == '__main__':

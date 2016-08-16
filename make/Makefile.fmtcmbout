@@ -1,0 +1,27 @@
+FMT = txt
+
+ifndef FMT
+$(error Conversion format was not specified! Terminating...)
+endif
+
+INPUT = 
+ifndef INPUT
+$(error Input file was not specified! Terminating...)
+endif
+
+PARSELIMITS = ./util/parseLimits.py
+
+format: $(INPUT)
+	@date +"%y-%m-%d-%H-%M"
+	@echo "Formatting combine output: $(FMT)"
+	@echo "Using input file: $(INPUT)"
+	@if [ "$(FMT)" == "tex" ]; then\
+		echo "TEX";\
+	fi
+	@if [ "$(FMT)" == "txt" ]; then\
+		echo "TEXT";\
+		$(PARSELIMITS) -i $(INPUT);\
+	fi
+
+.PHONY: format
+

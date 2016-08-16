@@ -1,0 +1,6 @@
+mergeSUSYTOP:
+	@date +"%y-%m-%d-%H-%M"
+	@echo "merging SUSY and TOP datacards"
+	#combineCards.py Name1=card1.txt Name2=card2.txt .... > card.txt
+
+.PHONY: mergeSUSYTOP

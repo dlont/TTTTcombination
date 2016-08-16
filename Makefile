@@ -1,4 +1,2 @@
-mergeSUSYTOP:
-	@echo "merging SUSY and TOP datacards"
-
-.PHONY: mergeSUSYTOP
+include make/Makefile.merge
+include make/Makefile.fmtcmbout

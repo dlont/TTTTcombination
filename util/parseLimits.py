@@ -22,10 +22,12 @@
 #"""
 
 import argparse
+import json
+import sys
 
 xsec_tttt = 0.009103 # pb
 
-def get_lim(lim_str, xsec, name):
+def get_lim(lim_str, xsec, name, format='txt', out_filename=None):
     d = {}
     for line in lim_str.splitlines():
         if "Observed" in line: d["obs"] = float(line.split("<")[-1])
@@ -40,14 +42,28 @@ def get_lim(lim_str, xsec, name):
     exp_sm1 = d["exp_16.0"]*xsec
     exp_sp1 = d["exp_84.0"]*xsec
 
-    print "Limits for %s" % name
-    print "  Obs: %.3f %s" % (obs, unit)
-    print "  Exp: %.3f + %.4f - %.4f %s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
+    json_array = json.dumps(d)
+    print json_array
+
+    if 'txt' in format:
+	print "Limits for %s" % name
+    	print "  Obs: %.3f %s" % (obs, unit)
+    	print "  Exp: %.3f + %.4f - %.4f %s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
+    elif 'tex' in format:
+	print "Stub!!!"
+    elif 'json' in format:
+	if out_filename is not None:
+		with open(out_filename, 'w') as outfile:
+    			json.dump(d, outfile, sort_keys=True, indent=4)
+    else:
+	error_msg = 'Format ' + format + ' not recognised! Terminating...'
+	sys.exit(error_msg)
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Combine limit output parser')
 	parser.add_argument('-i','--input', help='Input file name',required=True)
-	#parser.add_argument('-o','--output',help='Output file name', required=True)
+	parser.add_argument('-f','--format', help='Output format', required=False)
+	parser.add_argument('-o','--output',help='Output file name', required=False)
 	args = parser.parse_args()
 	return args
 
@@ -63,7 +79,7 @@ def main():
 				print(line.strip())
 				lim_tttt += line
 
-	get_lim(lim_tttt, xsec_tttt, "TTTT")
+	get_lim(lim_tttt, xsec_tttt, "TTTT", args.format, args.output)
 
 
 if __name__ == '__main__':

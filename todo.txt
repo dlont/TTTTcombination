@@ -1,4 +1,6 @@
 x (A) Merge tttt TOP ICHEP/PAS and SUSY 2015 datacards  @work +Combination
-(A) Merge all possible combinations of channels @work +Combination
-
+(A) Read both SUSY and TOP ANs @work +Combination
+(A) Identify common bg sources. Make a table. @work +Combination
+(A) Identify common triggers/systematic uncertainties. Make a table @work +Combination
+(B) Merge all possible combinations of channels @work +Combination
 

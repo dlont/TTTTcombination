@@ -1,5 +1,7 @@
 #!/cvmfs/cms.cern.ch/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_4_7/external/slc6_amd64_gcc491/bin/python
 
+
+# Example input
 # v8.04_tttt_July26/card_tttt_12.9ifb-all.txt
 #lim_tttt = """
 # -- Asymptotic --
@@ -27,7 +29,15 @@ import sys
 
 xsec_tttt = 0.009103 # pb
 
-def get_lim(lim_str, xsec, name, format='txt', out_filename=None):
+def get_lim(lim_str, xsec, name, format='txt', json_filename=None):
+    """
+	Convert combine tool output to different format.
+	lim_str: raw combine output string with Observed or Expected strings only.
+	xsec: constant SM cross section prediction.
+	name: Process label (e.g. 'TTTT').
+	format: target format [txt,tex,json and combinations thereof].
+	out_filename: json output file name
+    """
     d = {}
     for line in lim_str.splitlines():
         if "Observed" in line: d["obs"] = float(line.split("<")[-1])
@@ -54,7 +64,7 @@ def get_lim(lim_str, xsec, name, format='txt', out_filename=None):
         print "  Exp: $%.3f^{+%.4f}_{-%.4f}$ \%s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
     if 'json' in format:
 	if out_filename is not None:
-		with open(out_filename, 'w') as outfile:
+		with open(json_filename, 'w') as outfile:
     			json.dump(d, outfile, sort_keys=True, indent=4)
 
 def parse_args():

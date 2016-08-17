@@ -45,3 +45,10 @@ It is possible to parse combine output using
 ```
 make -B  format FMT=txt INPUT=result/16-08-12-18-25/combine.asymptotic.out
 ```
+
+
+Mit 17 Aug 2016 01:40:14 CEST
+Add json output support. New option can is invoked by 
+```
+make -B format FMT=json INPUT=result/16-08-12-18-25/combine.asymptotic.out OUTPUTJSON=YO1.json
+```

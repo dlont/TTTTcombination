@@ -1,4 +1,6 @@
 x (A) Merge tttt TOP ICHEP/PAS and SUSY 2015 datacards  @work +Combination
+(A) use consitent naming for systematics in shape.root files and data cards @work +Combination
+(A) use NP_overlay_TTTT_NLO instead of TTTT for label remapping in util/remaplabels.sed @work +Combination
 (A) Read both SUSY and TOP ANs @work +Combination
 (A) Identify common bg sources. Make a table. @work +Combination
 (A) Identify common triggers/systematic uncertainties. Make a table @work +Combination

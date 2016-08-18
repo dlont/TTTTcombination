@@ -17,3 +17,9 @@ make -B  format FMT=txt INPUT=result/16-08-12-18-25/combine.asymptotic.out
 where 
 FMT=[txt|tex] possible output format
 INPUT=[path to file] output of combine job
+
+
+good SED manual
+http://www.grymoire.com/Unix/Sed.html
+
+

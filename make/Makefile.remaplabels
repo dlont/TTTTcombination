@@ -1,0 +1,20 @@
+INPUT =
+ifndef INPUT
+$(error Input file was not specified! Terminating...)
+endif
+
+OUTPUT =
+ifndef OUTPUT
+$(error Output file was not specified! Terminating...)
+endif
+
+SEDSCRIPT = ./util/remaplabels.sed
+
+remaplabels: $(INPUT)
+	@date +"%y-%m-%d-%H-%M"
+	@echo "Replacing symbols in combine output."
+	@echo "Using input file: $(INPUT)"
+	@$(SEDSCRIPT) < $(INPUT) > $(OUTPUT)
+
+.PHONY: remaplabels
+

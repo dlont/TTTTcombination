@@ -10,5 +10,5 @@
 
 # Find lines starting with 'jes' and
 # replace every occurence of 'jes' with 'JES'
-/^pu/ s|jes|JES|
+/^jes/ s|jes|JES|
 

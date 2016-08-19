@@ -61,3 +61,57 @@ make -B remaplabels INPUT=data/v0.0/16-08-12-18-17/card-top-all-susy-all.txt OUT
 ```
 
 
+Fre 19 Aug 2016 01:14:05 CEST
+Add python script for histogram names remaping. Currently the map is hardcoded in the script itself.
+WARNING!!! The script overwrites original file.
+To apply histogram renaming script to a list of ROOT files do:
+```
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/tttt_*.root; do ./util/remaphistograms.py -r $file;done
+```
+
+Preparing input datacards and shape ROOT files for new round of limit extraction. Change processes and systematics labels to match TOP analysis.
+```
+mkdir -p data/v0.1/`date +%y-%m-%d-%H-%M`
+make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1/16-08-19-01-35/card_tttt_2.3ifb-all.txt
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1/16-08-19-01-35/card_tttt_2.3ifb-all.txt > data/v0.1/16-08-19-01-35/card-top-all-susy-all.txt
+```
+Paths to ROOT shape files are have to be fixed again as in v0.0 version of combined datacard. This time one has to take into accout difference in the path to shape files with renamed histograms.
+
+Comparison of the v0.0 and v0.1 versions of the card-top-all-susy-all.txt shows that pu and tttt labels were correctly treated in the SUSY input
+```
+/usr/bin/python /usr/bin/meld data/v0.0/16-08-12-18-17/card-top-all-susy-all.txt data/v0.1/16-08-19-01-35/card-top-all-susy-all.txt
+```
+
+
+Fre 19 Aug 2016 02:49:39 CEST
+Add JES unc from SUSY to the list of relabeled systematics.
+ROOT shape files ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/tttt_* were updated using the latest version of the ./util/remaphistograms.py script including 'jes' map (see d55cf0f)
+```
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/tttt_*.root; do ./util/remaphistograms.py -r $file;done
+```
+
+datacards were updated accordingly
+```
+mkdir -p data/v0.1.1/`date +%y-%m-%d-%H-%M`
+make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-19-02-50/card_tttt_2.3ifb-all.txt
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.1/16-08-19-02-50/card_tttt_2.3ifb-all.txt > data/v0.1.1/16-08-19-02-50/card-top-all-susy-all.txt
+```
+The path to shape files was fixed manually
+There was a bug in util/remaplabels.sed affecting jes relabling. The bug is fixed in d6aebbf.
+Repeat again after the bug fex.
+```
+mkdir -p data/v0.1.1/`date +%y-%m-%d-%H-%M`
+make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-19-03-09/card_tttt_2.3ifb-all.txt
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.1/16-08-19-03-09/card_tttt_2.3ifb-all.txt > data/v0.1.1/16-08-19-03-09/card-top-all-susy-all.txt
+```
+
+Fre 19 Aug 2016 03:18:09 CEST
+Run combination
+```
+combine --verbose=5 -M Asymptotic data/v0.1.1/16-08-19-03-09/card-top-all-susy-all.txt > result/16-08-19-03-19/combine.asymptotic.out
+```
+Crashes because of missing systematic histograms. Instead of `for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/tttt_*.root`. I repeat `for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/*.root` and re-run combine.
+This doesn't sovlve the crash problem. I suspect that this is due to missing jes and pu syst histograms in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/flips_histos_hilow_2.3ifb.root (see verbose output of combine). However, I don't understand how it was working before.
+
+
+

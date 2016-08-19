@@ -8,3 +8,7 @@
 # replace every occurence of 'pu' with 'PU'
 /^pu/ s|pu|PU|
 
+# Find lines starting with 'jes' and
+# replace every occurence of 'jes' with 'JES'
+/^pu/ s|jes|JES|
+

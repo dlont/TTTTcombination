@@ -23,3 +23,9 @@ good SED manual
 http://www.grymoire.com/Unix/Sed.html
 
 
+
+Rename histograms in ROOT file.
+WARNING: this command modifies original file
+```
+./util/remaphistograms.py -r tttt_histos_hihi_2.3ifb.root
+```

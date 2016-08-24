@@ -136,3 +136,10 @@ Run combination after fixing path to ROOT shape files
 combine --noFitAsimov -M Asymptotic data/v0.1.1/16-08-24-02-01/card-top-all-susy-all.txt > result/16-08-24-02-07/combine.asymptotic.out
 ```
 This is the first result with JES, PU and lumi all correlated
+
+
+
+Mit 24 Aug 2016 22:20:23 CEST
+Removed Makefile because it includes other Makefiles that require irrelevant for specific task variables to be specified. E.g. one has to specify OUTPUT variable for Makefile.remaplabels when just `make format` is launched, that doesn't need OUTPUT
+
+

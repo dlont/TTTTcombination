@@ -3,6 +3,7 @@
 # Find lines starting with 'process' and
 # replace every occurence of tttt with NP_overlay_ttttNLO  
 /^process/ s/ tttt / NP_overlay_ttttNLO /g
+/^shapes/ s/ tttt / NP_overlay_ttttNLO /g
 
 # Find lines starting with 'pu' and
 # replace every occurence of 'pu' with 'PU'

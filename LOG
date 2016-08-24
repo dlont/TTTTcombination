@@ -115,3 +115,24 @@ This doesn't sovlve the crash problem. I suspect that this is due to missing jes
 
 
 
+Mit 24 Aug 2016 01:58:20 CEST
+Seems to find a bug that causes the crash (see above). The problem is in sed script that doesn't replace 'tttt' with 'NP_overlay' in shapes section of the datard.
+The sed script util/remaplabels.sed was adjusted (see 6a1c4fb408c5b9138c3bbc07ff3fa972071415ce)
+
+```
+mkdir -p data/v0.1.1/`date +%y-%m-%d-%H-%M`
+mkdir -p result/16-08-24-02-07
+```
+New input files are strored in 
+data/v0.1.1/16-08-24-02-01/
+
+Preparing new datacards
+```
+make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-24-02-01/card_tttt_2.3ifb-all.txt
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.1/16-08-24-02-01/card_tttt_2.3ifb-all.txt > data/v0.1.1/16-08-24-02-01/card-top-all-susy-all.txt
+```
+Run combination after fixing path to ROOT shape files
+```
+combine --noFitAsimov -M Asymptotic data/v0.1.1/16-08-24-02-01/card-top-all-susy-all.txt > result/16-08-24-02-07/combine.asymptotic.out
+```
+This is the first result with JES, PU and lumi all correlated

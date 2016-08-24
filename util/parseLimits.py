@@ -63,7 +63,7 @@ def get_lim(lim_str, xsec, name, format='txt', json_filename=None):
         print "  Obs: %.3f \%s" % (obs, unit)
         print "  Exp: $%.3f^{+%.4f}_{-%.4f}$ \%s" % (exp, exp_sp1-exp, exp-exp_sm1, unit)
     if 'json' in format:
-	if out_filename is not None:
+	if json_filename is not None:
 		with open(json_filename, 'w') as outfile:
     			json.dump(d, outfile, sort_keys=True, indent=4)
 

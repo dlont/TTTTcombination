@@ -30,4 +30,11 @@ WARNING: this command modifies original file
 ./util/remaphistograms.py -r tttt_histos_hihi_2.3ifb.root
 ```
 
+Remap labels in datacards
+```
+make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-24-02-01/card_tttt_2.3ifb-all.txt
+```
 
+
+Comparison of multiple limits
+./util/compareLimit.py fit1.json fit2.json

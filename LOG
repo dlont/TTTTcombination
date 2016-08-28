@@ -143,3 +143,33 @@ Mit 24 Aug 2016 22:20:23 CEST
 Removed Makefile because it includes other Makefiles that require irrelevant for specific task variables to be specified. E.g. one has to specify OUTPUT variable for Makefile.remaplabels when just `make format` is launched, that doesn't need OUTPUT
 
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------IIHE Thursday meeting 25/08/2012-----------------------------------------------
+
+
+combine --noFitAsimov -M Asymptotic data/v0.1.1/16-08-24-02-01/card_tttt_2.3ifb-all.txt > result/meeting/iihe-16-25-08/combine.asymptotic.out
+
+make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=result/meeting/iihe-16-25-08/SUSYonly.combine.asymptotic.out OUTPUTJSON=result/meeting/iihe-16-25-08/fit-SUSYonly.json
+
+combine --noFitAsimov -M Asymptotic pascards/TotalChannelCombination.txt > combine2015_tttt/result/meeting/iihe-16-25-08/TOPonly.combine.asymptotic.out
+
+make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=result/meeting/iihe-16-25-08/TOPonly.combine.asymptotic.out OUTPUTJSON=result/meeting/iihe-16-25-08/fit-TOPonly.json
+
+
+
+mkdir -p data/v0.1.1/16-08-25-12-31
+
+Commented out JES and PU mo make them independent in TOP and SUSY samples in the following files
+cp ./util/remaplabels.sed ./util/remaplabels_sig_proc_only.sed
+cp ./util/remaphistograms.py ./util/remaphistograms_sig_only.py 
+
+make -B remaplabels -f make/Makefile.remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-25-12-31/card_tttt_2.3ifb-all.txt SEDSCRIPT=./util/remaplabels_sig_proc_only.sed
+
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.1/16-08-25-12-31/card_tttt_2.3ifb-all.txt > data/v0.1.1/16-08-25-12-31/card-top-all-susy-all.txt

@@ -150,15 +150,15 @@ class comparisonFac:
         logger.debug('Finished')
         pass
     
-def compare(json_list,format='pdf'):
+def compare(json_list,fmt='pdf'):
     '''
     make figure or table with limit comparison
     '''
     logger.debug('Started')
     logger.info(pprint.pformat(json_list))
-    logger.info('Output format: ' + format)
+    logger.info('Output format: ' + fmt)
     
-    comparison = comparisonFac(format)
+    comparison = comparisonFac(fmt)
     for json_name in json_list:
         with open(json_name) as json_file:
             point = json.load(json_file)
@@ -182,7 +182,7 @@ def main(argv):
                     add_help=False)
     parser.add_argument('-u', '--usage', action='help', help='show this help message and exit')
     parser.add_argument('-l','--loglevel', help='verbosity threshold: DEBUG, INFO, WARNING, ERROR', required=False)
-    parser.add_argument('-f','--format', help='comprison output format: pdf,png,eps,C,tex', required=False)
+    parser.add_argument('-f','--fmt', help='comprison output format: pdf,png,eps,C,tex', required=False)
     parser.add_argument('json_files', metavar='JSON', type=str, nargs='+',
                     help='JSON objects with points definitions')
                         
@@ -197,7 +197,7 @@ def main(argv):
     
     #make comparison
     logger.debug('Started')
-    compare(args.json_files)
+    compare(args.json_files,fmt=args.fmt)
     logger.debug('Finished')
     
 if __name__ == "__main__":

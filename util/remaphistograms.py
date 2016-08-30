@@ -56,7 +56,8 @@ def main(argv):
     labelMapDic = {
     'tttt_':'NP_overlay_ttttNLO_',
     'pu':'PU',
-    'jes':'JES'
+    'jes':'JES',
+    'lepeff':'leptonSF'
     }
     remaphistnames(rootFileName, labelMapDic)
 

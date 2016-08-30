@@ -173,3 +173,16 @@ cp ./util/remaphistograms.py ./util/remaphistograms_sig_only.py
 make -B remaplabels -f make/Makefile.remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.1/16-08-25-12-31/card_tttt_2.3ifb-all.txt SEDSCRIPT=./util/remaplabels_sig_proc_only.sed
 
 combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.1/16-08-25-12-31/card_tttt_2.3ifb-all.txt > data/v0.1.1/16-08-25-12-31/card-top-all-susy-all.txt
+
+
+
+------------------------------------------------------------IIHE Thursday meeting 29/08/2012-----------------------------------------------
+mkdir data/v0.1.2/16-08-29-17-22/
+make -B remaplabels -f make/Makefile.remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-all.txt OUTPUT=data/v0.1.2/16-08-29-17-22/card_tttt_2.3ifb-all.txt
+combineCards.py TOP=../pascards/TotalChannelCombination.txt SUSY=data/v0.1.2/16-08-29-17-22/card_tttt_2.3ifb-all.txt > data/v0.1.2/16-08-29-17-22/card-top-all-susy-all.txt
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel/v6.02-tttt/tttt_*.root; do ./util/remaphistograms.py -r $file;done
+combine --noFitAsimov -M Asymptotic data/v0.1.2/16-08-29-17-22/card-top-all-susy-all.txt > result/meeting/iihe-16-08-29/combine.asymptotic.out
+make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=result/meeting/iihe-16-08-29/combine.asymptotic.out OUTPUTJSON=result/meeting/iihe-16-08-29/fit-JES-LUMI-PU-lepSF-corr.json
+cp result/meeting/iihe-16-25-08/fit-SUSYonly.json result/meeting/iihe-16-25-08/fit-TOPonly.json result/meeting/iihe-16-25-08/fit-JES-LUMI-PU-corr.json result/meeting/iihe-16-08-29/
+
+

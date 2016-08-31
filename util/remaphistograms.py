@@ -5,6 +5,7 @@ import sys, getopt, json, re
 from ROOT import gROOT
 from ROOT import TKey, TClass
 from ROOT import TFile, TObject, TList, TIter
+from ROOT import TH1
 
 def parseArgs(argv):
    """
@@ -48,7 +49,8 @@ def remaphistnames(rootFileName,labelMap):
 #        replace matching key with its value in the dic
         resultHistName = pattern.sub(lambda x: labelMap[x.group()], origHistName )
         print origHistName + ':' + resultHistName
-        hist.Write(resultHistName)
+	if origHistName != resultHistName:
+            hist.Write(resultHistName)
         
 
 def main(argv):

@@ -186,3 +186,86 @@ make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=result/meeting/iihe-16-
 cp result/meeting/iihe-16-25-08/fit-SUSYonly.json result/meeting/iihe-16-25-08/fit-TOPonly.json result/meeting/iihe-16-25-08/fit-JES-LUMI-PU-corr.json result/meeting/iihe-16-08-29/
 
 
+
+Mit 31 Aug 2016 01:43:51 CEST
+
+Asimov and no-Asimov limit on dilepton datacards gives very different results
+```
+combine -M Asymptotic datacardHiggsCombined_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt
+```
+ -- Asymptotic -- 
+Observed Limit: r < 10.6799
+Expected  2.5%: r < 5.8729
+Expected 16.0%: r < 8.9110
+Expected 50.0%: r < 14.8125
+Expected 84.0%: r < 26.9754
+Expected 97.5%: r < 44.9015
+These are the same values as reported by Jesse in email "Dilepton Limits after CSV reshaping" on 29 August, 2016 19:16
+When I run combine with -noFitAsimov option I get
+```
+combine --noFitAsimov -M Asymptotic datacardHiggsCombined_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt
+```
+ -- Asymptotic -- 
+Observed Limit: r < 12.2665
+Expected  2.5%: r < 11.2502
+Expected 16.0%: r < 16.2712
+Expected 50.0%: r < 25.3750
+Expected 84.0%: r < 42.1652
+Expected 97.5%: r < 68.6860
+
+
+------------------------------------------------------
+
+
+Prepare folder for datacards with CSV RS systematics
+```
+mkdir -p data/v0.2.0/16-08-31-01-42/
+mkdir -p result/16-08-31-01-45
+```
+
+Combine postPAS datacards with new CSV RS btag systematics
+```
+combineCards.py TOPmu=../postpascards/v1.0/datacardMu_BDT_Mu24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPel=../postpascards/v1.0/datacardEl_BDT_El24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPmumu=../postpascards/v1.0/datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPmuel=../postpascards/v1.0/datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPelel=../postpascards/v1.0/datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt SUShihi=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-hihi.txt SUShilo=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-hilow.txt SUSlolo=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/card_tttt_2.3ifb-lowlow.txt > data/v0.2.0/16-08-31-01-42/TOP-SUS-combined.txt
+```
+Make the combination with all uncertainties uncorrelated. FAILED because nuissance labeles has to be fixed firts.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Mit 31 Aug 2016 23:33:08 CEST
+
+Update labels in SUSY cards for permanent usage
+```
+mkdir -p data/v0.2.0/16-08-31-22-42/
+```
+```
+for i in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10/v6.02-tttt/*.txt; do make -B remaplabels -f make/Makefile.remaplabels INPUT=$i OUTPUT=data/v0.2.0/16-08-31-22-42/`basename $i`;done
+```
+```
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel_v2/v6.02-tttt/*.root; do ./util/remaphistograms.py -r $file;done
+```
+It was checked that the same limit as with original cards was obtained.
+
+Combine new TOP cards with CSV RS and SUSY cards.
+```
+combineCards.py TOPmu=../postpascards/v1.0/datacardMu_BDT_Mu24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPel=../postpascards/v1.0/datacardEl_BDT_El24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPmumu=../postpascards/v1.0/datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPmuel=../postpascards/v1.0/datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPelel=../postpascards/v1.0/datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt SUShihi=data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-hihi.txt SUShilo=data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-hilow.txt SUSlolo=data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-lowlow.txt > data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt
+```
+```
+combine -M Asymptotic --noFitAsimov data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt
+```
+Receive the error when running combine:
+    if not self.options.noCheckNorm: raise RuntimeError, "Mismatch in normalizations for bin %s, process %s: rate %f, shape %f" % (b,p,self.DC.exp[b][p],norm)
+RuntimeError: Mismatch in normalizations for bin TOPmumu_ttttmumu4nJets, process DYJets: rate 1.767700, shape 1.983982
+Error when running the combination:
+This is because I copied wrong files fron Long's folder. After fixing this issue, fantastic limit can be obtained.
+```
+combine -M Asymptotic data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt
+combine -M Asymptotic data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt > result/16-09-01-00-30/combine.asymptotic.out
+
+```
+ -- Asymptotic -- 
+Observed Limit: r < 6.0103
+Expected  2.5%: r < 3.3405
+Expected 16.0%: r < 4.7267
+Expected 50.0%: r < 7.1562
+Expected 84.0%: r < 11.0642
+Expected 97.5%: r < 16.4544
+

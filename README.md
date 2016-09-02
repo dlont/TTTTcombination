@@ -38,3 +38,12 @@ make -B remaplabels INPUT=../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_A
 
 Comparison of multiple limits
 ./util/compareLimit.py fit1.json fit2.json
+
+Replacement of single systematic label by multiple options. Save alternatives in different files.
+```
+for VAR in {btagWeightCSVCFErr1,btagWeightCSVCFErr2,btagWeightCSVHF,btagWeightCSVHFStats1,btagWeightCSVHFStats2,btagWeightCSVLF,btagWeightCSVLFStats1,btagWeightCSVLFStats2}; do for i in card_tttt_2.3ifb-all.txt;do sed "/^btag/ s/btag/$VAR/" $i> $i.$VAR; echo $i.$VAR;done; done
+```
+
+```
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel_v3/v6.02-tttt/*.root; do for VAR in btagWeightCSVCFErr1 btagWeightCSVCFErr2 btagWeightCSVHF btagWeightCSVHFStats1 btagWeightCSVHFStats2 btagWeightCSVLF btagWeightCSVLFStats1 btagWeightCSVLFStats2; do ./util/remaphistograms_sig_only.py -r $file -d {\"btagDown\":\"$VAR'Down'\"};done;done
+```

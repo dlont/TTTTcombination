@@ -269,3 +269,52 @@ Expected 50.0%: r < 7.1562
 Expected 84.0%: r < 11.0642
 Expected 97.5%: r < 16.4544
 
+
+Replace btag nuissance label in SUSY cards by every possible CSV RS nuissance
+```
+for VAR in {btagWeightCSVCFErr1,btagWeightCSVCFErr2,btagWeightCSVHF,btagWeightCSVHFStats1,btagWeightCSVHFStats2,btagWeightCSVLF,btagWeightCSVLFStats1,btagWeightCSVLFStats2}; do for i in card_tttt_2.3ifb-*.txt;do sed "/^btag/ s/btag/$VAR/" $i> $i.$VAR; echo $i.$VAR;done; done
+```
+
+Combine datacards of single-lepton and dilepton channels
+```
+combineCards.py TOPmu=../postpascards/v1.0/datacardMu_BDT_Mu24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPel=../postpascards/v1.0/datacardEl_BDT_El24thAugCSVJetMinusnMLtags_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPmumu=../postpascards/v1.0/datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPmuel=../postpascards/v1.0/datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPelel=../postpascards/v1.0/datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt > data/v0.2.0/16-08-31-22-42/TOP-combined.txt
+```
+
+```
+combine -M Asymptotic data/v0.2.0/16-08-31-22-42/TOP-combined.txt
+```
+
+ -- Asymptotic -- 
+Observed Limit: r < 7.2749
+Expected  2.5%: r < 5.0457
+Expected 16.0%: r < 7.2866
+Expected 50.0%: r < 11.2812
+Expected 84.0%: r < 18.0264
+Expected 97.5%: r < 29.3449
+
+
+Fre 02 Sep 2016 01:52:46 CEST
+
+Make multiple SUSY/TOP combined datacards with different CSV RS systematic component correlated to SUSY btag
+```
+for VAR in {btagWeightCSVCFErr1,btagWeightCSVCFErr2,btagWeightCSVHF,btagWeightCSVHFStats1,btagWeightCSVHFStats2,btagWeightCSVLF,btagWeightCSVLFStats1,btagWeightCSVLFStats2}; do combineCards.py TOP=TOP-combined.txt SUS=card_tttt_2.3ifb-all.txt.$VAR > TOP-SUS-combined.txt.$VAR;done
+```
+Make copies of SUSY btag histograms with different CSVRS systematics names
+```
+for file in ../uaf-6.t2.ucsd.edu/~namin/dump/fourtop_combination_Aug10_histrelabel_v3/v6.02-tttt/*.root; do for VAR in btagWeightCSVCFErr1 btagWeightCSVCFErr2 btagWeightCSVHF btagWeightCSVHFStats1 btagWeightCSVHFStats2 btagWeightCSVLF btagWeightCSVLFStats1 btagWeightCSVLFStats2; do ./util/remaphistograms_sig_only.py -r $file -d {\"btagDown\":\"$VAR'Down'\"};done;done
+```
+
+Run combine over different systematic correlation options
+```
+for i in data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt.btagWeight*; do combine -M Asymptotic $i > $i.combine.out;done
+```
+
+Convert to json format
+```
+for i in result/16-09-02-01-18/TOP-SUS-combined.txt.btagWeightCSV*;do make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=$i OUTPUTJSON="`dirname $i`/`basename $i .combine.out`.json";done
+```
+
+Make comparison plot
+```
+./util/compareLimit.py result/16-09-01-00-30/fit-TOPCSVRS-JES-LUMI-PU-lepSF-corr.json result/16-09-02-01-18/TOP-SUS-combined.txt.btagWeightCSV*.json --fmt=png --outfile=TOP-SUSY-LUMI-JES-PU-LEPSF-CSVRScorr.png
+```

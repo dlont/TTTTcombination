@@ -5,6 +5,7 @@ import sys, getopt, json, re
 from ROOT import gROOT
 from ROOT import TKey, TClass
 from ROOT import TFile, TObject, TList, TIter
+from ROOT import TH1
 
 def parseArgs(argv):
    """
@@ -13,8 +14,9 @@ def parseArgs(argv):
    scriptName = "remaphistograms.py"
     
    rootfile = ''
+   dic = {}
    try:
-      opts, args = getopt.getopt(argv,"ur:",["usage","rootfile="])
+      opts, args = getopt.getopt(argv,"ur:d:",["usage","rootfile=","dictionary="])
    except getopt.GetoptError:
       print scriptName + ' -r <rootfile>'
       sys.exit(2)
@@ -24,9 +26,12 @@ def parseArgs(argv):
          sys.exit()
       elif opt in ("-r", "--rootfile"):
          rootfile = arg
+      elif opt in ("-d", "--dictionary"):
+         print arg
+         dic = json.loads(arg)
    print 'ROOT file is "', rootfile, '"'
    
-   return rootfile
+   return rootfile, dic
 
 def remaphistnames(rootFileName,labelMap):
     
@@ -34,6 +39,10 @@ def remaphistnames(rootFileName,labelMap):
     rootFile = TFile.Open(rootFileName,"UPDATE")
     if rootFile is None:
         sys.exit("Can't open root file: "+rootFileName+" Terminating...")
+    
+    matchstring = r'(^' + '$|^'.join(labelMap.keys()) + r'$)'
+    print 'search pattern: ' + matchstring
+    pattern = re.compile(matchstring)
     
     rootKeyList = rootFile.GetListOfKeys()
     for key in rootKeyList:
@@ -43,21 +52,18 @@ def remaphistnames(rootFileName,labelMap):
         hist = key.ReadObj();
         origHistName = hist.GetName()
 #        find any key in the labelMap dic
-        matchstring = r'(' + '|'.join(labelMap.keys()) + r')'
-        pattern = re.compile(matchstring)
 #        replace matching key with its value in the dic
         resultHistName = pattern.sub(lambda x: labelMap[x.group()], origHistName )
         print origHistName + ':' + resultHistName
-        hist.Write(resultHistName)
-        
+        if origHistName != resultHistName:
+            hist.Write("",TObject.kOverwrite)
+            hist.Write(resultHistName,TObject.kOverwrite)
+            break
+    rootFile.Close()    
 
 def main(argv):
-    rootFileName = parseArgs(argv)
-    labelMapDic = {
-    'tttt_':'NP_overlay_ttttNLO_'
-#    'pu':'PU',
-#    'jes':'JES'
-    }
+    rootFileName, labelMapDic = parseArgs(argv)
+    print labelMapDic
     remaphistnames(rootFileName, labelMapDic)
 
 if __name__ == "__main__":

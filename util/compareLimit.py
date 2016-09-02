@@ -45,10 +45,11 @@ class comparisonFac:
     result_format: supported options ("pdf","png","eps","C","tex")
     currently "tex" is a stub.
     '''
-    def __init__(self,result_format):
+    def __init__(self,result_format,outfilename='limitComparison'):
         logger.debug('Started')
         self.result_format = result_format
         self.points_list = []
+        self.outfilename=outfilename
         logger.debug('Finished')
         
     def addPoint(self,point):
@@ -139,7 +140,7 @@ class comparisonFac:
         canvas.BuildLegend()
         tdrstyle.cmsPrel(-1., 13., False)
         
-        canvas.Print('limitComparison.'+self.result_format)
+        canvas.Print(self.outfilename+'.'+self.result_format)
         logger.debug('Finished')
     
     def getTable(self):
@@ -150,15 +151,15 @@ class comparisonFac:
         logger.debug('Finished')
         pass
     
-def compare(json_list,fmt='pdf'):
+def compare(json_list,outname,fmt='pdf'):
     '''
     make figure or table with limit comparison
     '''
     logger.debug('Started')
     logger.info(pprint.pformat(json_list))
-    logger.info('Output format: ' + fmt)
+    logger.info('Output file: '+outname+'.'+fmt)
     
-    comparison = comparisonFac(fmt)
+    comparison = comparisonFac(fmt,outname)
     for json_name in json_list:
         with open(json_name) as json_file:
             point = json.load(json_file)
@@ -181,6 +182,7 @@ def main(argv):
     parser = argparse.ArgumentParser(description='Compare multiple limits in the same plot.',
                     add_help=False)
     parser.add_argument('-u', '--usage', action='help', help='show this help message and exit')
+    parser.add_argument('-o','--outfile', help='output file name without extension', required=True)
     parser.add_argument('-l','--loglevel', help='verbosity threshold: DEBUG, INFO, WARNING, ERROR', required=False)
     parser.add_argument('-f','--fmt', help='comprison output format: pdf,png,eps,C,tex', required=False)
     parser.add_argument('json_files', metavar='JSON', type=str, nargs='+',
@@ -197,7 +199,7 @@ def main(argv):
     
     #make comparison
     logger.debug('Started')
-    compare(args.json_files,fmt=args.fmt)
+    compare(args.json_files,args.outfile,fmt=args.fmt)
     logger.debug('Finished')
     
 if __name__ == "__main__":

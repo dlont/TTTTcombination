@@ -318,3 +318,61 @@ Make comparison plot
 ```
 ./util/compareLimit.py result/16-09-01-00-30/fit-TOPCSVRS-JES-LUMI-PU-lepSF-corr.json result/16-09-02-01-18/TOP-SUS-combined.txt.btagWeightCSV*.json --fmt=png --outfile=TOP-SUSY-LUMI-JES-PU-LEPSF-CSVRScorr.png
 ```
+
+
+Don 08 Sep 2016 02:38:48 CEST
+Limits for presentation at TOP XS meeting
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Single lepton
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Datacard were taken from 
+```
+~/ThirteenTeV/CMSSW_7_1_5/src/FinalToPaper2
+```
+
+```
+cp ~lbeck/ThirteenTeV/CMSSW_7_1_5/src/FinalToPaper2/* ../papercards/
+mkdir -p data/v0.3.0/`date +%y-%m-%d-%H-%M` #16-09-08-02-52
+mkdir -p result/meeting/top-09-09-2016
+```
+
+Combine datacards of single-lepton and dilepton channels
+```
+combineCards.py TOPmu=../papercards/datacardMu_BDT_Mu29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPel=../papercards/datacardEl_BDT_El29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPmumu=../postpascards/v1.0/datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPmuel=../postpascards/v1.0/datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPelel=../postpascards/v1.0/datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt > data/v0.3.0/16-09-08-02-52/TOP-combined.txt
+```
+
+TEST. Single-lepton and dilepton channels combined 
+```
+combine -M Asymptotic data/v0.3.0/16-09-08-02-52/TOP-combined.txt > TOP-combined.combine.out
+```
+
+Merge TOP and SUSY datacards
+```
+combineCards.py TOP=data/v0.3.0/16-09-08-02-52/TOP-combined.txt  SUS=data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-all.txt > data/v0.3.0/16-09-08-02-52/TOP-SUS-combined.txt.btagUncorr
+cd data/v0.3.0/16-09-08-02-52
+for VAR in btagWeightCSVCFErr1 btagWeightCSVCFErr2 btagWeightCSVHF btagWeightCSVHFStats1 btagWeightCSVHFStats2 btagWeightCSVLF btagWeightCSVLFStats1 btagWeightCSVLFStats2; do combineCards.py TOP=TOP-combined.txt SUS=../../v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-all.txt.$VAR > TOP-SUS-combined.txt.$VAR;done
+sed -i 's/\.\.\/\.\.\/v0.2.0\/16-08-31-22-42\///' TOP-SUS-combined.txt.btagWeightCSV* #TO REPLACE INCORECT PATHS TO SHAPEFILES IN THE DATACARDS
+```
+
+Run combine over different systematic correlation options
+```
+combine -M Asymptotic  data/v0.3.0/16-09-08-02-52/TOP-SUS-combined.txt.btagUncorr > data/v0.3.0/16-09-08-02-52/TOP-SUS-combined.txt.btagUncor.combine.out
+for i in data/v0.2.0/16-08-31-22-42/TOP-SUS-combined.txt.btagWeight*; do combine -M Asymptotic $i > $i.combine.out;done
+```
+
+Convert to json format
+```
+
+for i in data/v0.3.0/*/TOP-SUS-combined.txt.btag*.combine.out;do make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=$i OUTPUTJSON="result/meeting/top-09-09-2016//`basename $i .combine.out`.json";done
+```
+
+Make comparison plot
+```
+./util/compareLimit.py result/meeting/top-09-09-2016/TOP-SUS-combined.txt.btagWeightCSV*.json --fmt=png --outfile=result/meeting/top-09-09-2016/TOP-SUSY-LUMI-JES-PU-LEPSF-CSVRScorr
+```
+

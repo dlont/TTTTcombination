@@ -376,3 +376,11 @@ Make comparison plot
 ./util/compareLimit.py result/meeting/top-09-09-2016/TOP-SUS-combined.txt.btagWeightCSV*.json --fmt=png --outfile=result/meeting/top-09-09-2016/TOP-SUSY-LUMI-JES-PU-LEPSF-CSVRScorr
 ```
 
+
+For pulls and correlations plots
+```
+combine -M MaxLikelihoodFit data/v0.3.0/16-09-08-02-52/TOP-SUS-combined.txt.btagUncorr
+mv mlfit.root result/meeting/top-09-09-2016/
+
+```
+

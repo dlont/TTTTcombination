@@ -119,10 +119,10 @@ class comparisonFac:
         logger.debug('Started')
         mg = TMultiGraph()
         
-        grExpected_style_dic = {'SetMarkerColor':ROOT.kBlue, 'SetMarkerSize':2, 'SetMarkerStyle':20, 'SetName':"Expected"}
+        grExpected_style_dic = {'SetMarkerColor':ROOT.kBlue, 'SetFillColor':ROOT.kWhite, 'SetMarkerSize':2, 'SetMarkerStyle':20, 'SetName':"Expected"}
         grExpected = self.getGraph('Exp', grExpected_style_dic)
         mg.Add(grExpected,"p")
-        grObserved_style_dic = {'SetMarkerColor':ROOT.kRed, 'SetMarkerSize':2, 'SetMarkerStyle':20, 'SetName':"Observed"}
+        grObserved_style_dic = {'SetMarkerColor':ROOT.kRed, 'SetFillColor':ROOT.kWhite, 'SetMarkerSize':2, 'SetMarkerStyle':20, 'SetName':"Observed"}
         grObserved = self.getGraph('Obs', grObserved_style_dic)
         mg.Add(grObserved,"p")
         

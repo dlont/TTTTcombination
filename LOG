@@ -386,5 +386,63 @@ mv mlfit.root result/meeting/top-09-09-2016/
 
 -------------------------------------------------------------------------------------------
 dilepton PAS combination
+-------------------------------------------------------------------------------------------
+No notes here
+
+
+Fre 16 Sep 2016 15:25:16 CEST
+
+Prepare folders for combination
+```
+mkdir data/v0.4.0
+cp /user/heilman/CMSSW_7_6_5/src/TopBrussels/FourTops/datacards/* data/v0.4.0
+mkdir -p result/`date +%y-%m-%d-%H-%M`                #16-09-16-15-27
+```
+
+Combine single-lepton and dilepton datacards
+```
+combineCards.py TOPmu=../papercards/datacardMu_BDT_Mu29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt  TOPel=../papercards/datacardEl_BDT_El29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt  TOPdilepton=../papercards_dilepton/datacardDileptonCombined_June6th2016.txt > data/v0.4.0/TopSingleLeptonDilepton.txt
+```
+!!!!!!!!!!!!!!!!This is WRONG!!!!!!!!!!!!!!!!!!!
+TOPdilepton=../papercards_dilepton/datacardDileptonCombined_June6th2016.txt is the old datacard
+Starting from scratch
+
+```
+mkdir data/v0.4.1
+combineCards.py TOPmu=../papercards/datacardMu_BDT_Mu29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt  TOPel=../papercards/datacardEl_BDT_El29Aug400trees_5MinNodeSize_20nCuts_3MaxDepth_5adaboostbeta_adaBoost_alphaSTune_noMinEvents_JTS.txt TOPmumu=../papercards_dilepton/v0.1/datacardMuMu_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPelel=../papercards_dilepton/v0.1/datacardElEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt TOPmuel=../papercards_dilepton/v0.1/datacardMuEl_BDT_DilepCombined22ndJune2016_13TeVHadTop_JS.txt > data/v0.4.1/TOP-combined.txt
+```
+Combine TOP and SUSY datacards
+```
+cp data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-all.txt* data/v0.4.1
+cd data/v0.4.1
+combineCards.py TOP=data/v0.4.1/TOP-combined.txt SUS=data/v0.2.0/16-08-31-22-42/card_tttt_2.3ifb-all.txt > data/v0.4.1/TOP-SUS-combined.txt.btagUncor
+for VAR in btagWeightCSVCFErr1,btagWeightCSVCFErr2,btagWeightCSVHF,btagWeightCSVHFStats1,btagWeightCSVHFStats2,btagWeightCSVLF,btagWeightCSVLFStats1,btagWeightCSVLFStats2; do combineCards.py TOP=TOP-combined.txt SUS=card_tttt_2.3ifb-all.txt.$VAR > TOP-SUS-combined.txt.$VAR;done
+rm card_tttt_2.3ifb-all.txt*
+```
+
+Run combine over different systematic correlation options
+```
+combine -M Asymptotic data/v0.4.1/TOP-SUS-combined.txt.btagUncor > data/v0.4.1/TOP-SUS-combined.txt.btagUncor.combine.out
+for i in data/v0.4.1/TOP-SUS-combined.txt.btagWeight*; do combine -M Asymptotic $i > $i.combine.out;done
+```
+Convert to JSON
+```
+make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=data/v0.4.1/TOP-SUS-combined.txt.btagUncor.combine.out OUTPUTJSON=data/v0.4.1/TOP-SUS-combined.txt.btagUncor.json
+for i in data/v0.4.1/TOP-SUS-combined.txt.btag*.combine.out;do make -B -f make/Makefile.fmtcmbout format FMT=json INPUT=$i OUTPUTJSON="data/v0.4.1/`basename $i .combine.out`.json";done
+```
+
+Btag correlations stability plot
+```
+./util/compareLimit.py data/v0.4.1/TOP-SUS-combined.txt.btagUncor.json data/v0.4.1/TOP-SUS-combined.txt.btagWeightCSV*.json --fmt=png --outfile=btagstability
+```
+
+For pulls and correlations plots
+```
+combine -M MaxLikelihoodFit --plots data/v0.4.1/TOP-SUS-combined.txt.btagUncor
+mv mlfit.root data/v0.4.1/TOP-SUS-combined-mlfit.btagUncor.root
+mv *.png result/16-09-16-15-27/
+python ../HiggsAnalysis/CombinedLimit/test/diffNuisances_denys.py data/v0.4.1/TOP-SUS-combined-mlfit.btagUncor.root -g result/16-09-16-15-27/nuisances.root
+
+```
 
 

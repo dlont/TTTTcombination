@@ -124,7 +124,7 @@ class comparisonFac:
         mg.Add(grExpected,"p")
         grObserved_style_dic = {'SetMarkerColor':ROOT.kRed, 'SetFillColor':ROOT.kWhite, 'SetMarkerSize':2, 'SetMarkerStyle':20, 'SetName':"Observed"}
         grObserved = self.getGraph('Obs', grObserved_style_dic)
-        mg.Add(grObserved,"p")
+        #mg.Add(grObserved,"p")
         
         canvas = TCanvas('canvas', 'CMS')
         gcSaver.append(canvas)

@@ -1,0 +1,124 @@
+imax 1  number of channels 
+jmax *  number of backgrounds 
+kmax *  number of nuisance parameters 
+---------------------------------------------------------------
+shapes tttt * v6.02-tttt/tttt_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes ttw * v6.02-tttt/ttw_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes ttzh * v6.02-tttt/ttzh_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes wz * v6.02-tttt/wz_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes ww * v6.02-tttt/ww_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes xg * v6.02-tttt/xg_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes rares * v6.02-tttt/rares_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes fakes * v6.02-tttt/fakes_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes flips * v6.02-tttt/flips_histos_lowlow_2.3ifb.root sr $SYSTEMATIC
+shapes data_obs * v6.02-tttt/data_histos_lowlow_2.3ifb.root sr sr
+---------------------------------------------------------------
+bin SS
+observation 3.000           
+---------------------------------------------------------------
+bin                                            SS              SS              SS              SS              SS              SS              SS              SS              SS              
+process                                        0               1               2               3               4               5               6               7               8               
+process                                        tttt            ttw             ttzh            wz              ww              xg              rares           fakes           flips           
+rate                                           0.010           0.146           0.277           0.190           0.097           0.040           0.009           5.086           0.024           
+---------------------------------------------------------------
+lumi                                     lnN   1.027           1.027           1.027           -               1.027           1.027           1.027           -               -               
+jes                                      shape 1               1               1               1               1               1               1               -               -               
+isr                                      shape -               -               -               -               -               -               -               -               -               
+scale                                    shape -               -               -               -               -               -               -               -               -               
+fs_lep_hh                                lnN   -               -               -               -               -               -               -               -               -               
+fs_lep_hl                                lnN   -               -               -               -               -               -               -               -               -               
+fs_lep_ll                                lnN   -               -               -               -               -               -               -               -               -               
+fs_hlt                                   lnN   -               -               -               -               -               -               -               -               -               
+lepeff                                   lnN   1.04            1.04            1.04            -               1.04            1.04            1.04            -               -               
+lephlt                                   lnN   1.02            1.02            1.02            -               1.02            1.02            1.02            -               -               
+hthlt                                    shape 1               1               1               -               1               1               1               -               -               
+bshlt                                    shape 1               1               1               -               1               1               1               -               -               
+btag                                     shape 1               1               1               1               1               1               1               -               -               
+pu                                       shape 1               1               1               1               1               1               1               -               -               
+TTW                                      lnN   -               1.13            -               -               -               -               -               -               -               
+ttw_extr_hth                             shape -               1               -               -               -               -               -               -               -               
+ttw_extr_htl                             shape -               1               -               -               -               -               -               -               -               
+ttw_extr_ll                              shape -               1               -               -               -               -               -               -               -               
+TTZH                                     lnN   -               -               1.11            -               -               -               -               -               -               
+ttzh_extr_hth                            shape -               -               1               -               -               -               -               -               -               
+ttzh_extr_htl                            shape -               -               1               -               -               -               -               -               -               
+ttzh_extr_ll                             shape -               -               1               -               -               -               -               -               -               
+WZ                                       lnN   -               -               -               1.30            -               -               -               -               -               
+WW                                       lnN   -               -               -               -               1.30            -               -               -               -               
+XG                                       lnN   -               -               -               -               -               1.50            -               -               -               
+rares                                    lnN   -               -               -               -               -               -               1.50            -               -               
+fakes                                    lnN   -               -               -               -               -               -               -               1.30            -               
+fakes_EWK                                shape -               -               -               -               -               -               -               1               -               
+flips                                    lnN   -               -               -               -               -               -               -               -               1.26            
+tttt_stat_lowlow1                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow2                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow3                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow4                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow5                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow6                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow7                        shape 1               -               -               -               -               -               -               -               -               
+tttt_stat_lowlow8                        shape 1               -               -               -               -               -               -               -               -               
+ttw_stat_lowlow1                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow2                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow3                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow4                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow5                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow6                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow7                         shape -               1               -               -               -               -               -               -               -               
+ttw_stat_lowlow8                         shape -               1               -               -               -               -               -               -               -               
+ttzh_stat_lowlow1                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow2                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow3                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow4                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow5                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow6                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow7                        shape -               -               1               -               -               -               -               -               -               
+ttzh_stat_lowlow8                        shape -               -               1               -               -               -               -               -               -               
+wz_stat_lowlow1                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow2                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow3                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow4                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow5                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow6                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow7                          shape -               -               -               1               -               -               -               -               -               
+wz_stat_lowlow8                          shape -               -               -               1               -               -               -               -               -               
+ww_stat_lowlow1                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow2                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow3                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow4                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow5                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow6                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow7                          shape -               -               -               -               1               -               -               -               -               
+ww_stat_lowlow8                          shape -               -               -               -               1               -               -               -               -               
+xg_stat_lowlow1                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow2                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow3                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow4                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow5                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow6                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow7                          shape -               -               -               -               -               1               -               -               -               
+xg_stat_lowlow8                          shape -               -               -               -               -               1               -               -               -               
+rares_stat_lowlow1                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow2                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow3                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow4                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow5                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow6                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow7                       shape -               -               -               -               -               -               1               -               -               
+rares_stat_lowlow8                       shape -               -               -               -               -               -               1               -               -               
+fakes_stat_lowlow1                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow2                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow3                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow4                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow5                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow6                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow7                       shape -               -               -               -               -               -               -               1               -               
+fakes_stat_lowlow8                       shape -               -               -               -               -               -               -               1               -               
+flips_stat_lowlow1                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow2                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow3                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow4                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow5                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow6                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow7                       shape -               -               -               -               -               -               -               -               1               
+flips_stat_lowlow8                       shape -               -               -               -               -               -               -               -               1               

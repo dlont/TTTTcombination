@@ -446,3 +446,11 @@ python ../HiggsAnalysis/CombinedLimit/test/diffNuisances_denys.py data/v0.4.1/TO
 ```
 
 
+Son 18 Sep 2016 22:12:02 CEST
+!!!!!!!!! WARNING !!!!!!!!!!!!!!!!!!!
+Move all input datacards from root folder to data. This will require updating path to shape files in all data/* datacards
+
+```
+mv ../papercards ../papercards_dilepton/ ../pascards/ ../postpascards/ ../preaprovalcards/ ../uaf-6.t2.ucsd.edu/ data
+```
+

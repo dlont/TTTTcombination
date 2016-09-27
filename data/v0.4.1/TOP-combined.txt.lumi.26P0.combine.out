@@ -1,0 +1,10 @@
+Median for expected limits: 0.957031
+Sigma  for expected limits: 0.48829
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 0.2570
+Expected 16.0%: r < 0.4812
+Expected 50.0%: r < 0.9570
+Expected 84.0%: r < 1.6208
+Expected 97.5%: r < 2.7994
+

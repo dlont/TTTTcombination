@@ -454,3 +454,38 @@ Move all input datacards from root folder to data. This will require updating pa
 mv ../papercards ../papercards_dilepton/ ../pascards/ ../postpascards/ ../preaprovalcards/ ../uaf-6.t2.ucsd.edu/ data
 ```
 
+
+
+
+
+
+
+
+
+Die 27 Sep 2016 13:02:57 CEST
+=================================================================================================================================================
+------------------------------------------------------------Limit extrapolation
+=================================================================================================================================================
+Convert txt datacard into RooStats workspace
+```
+text2workspace.py data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor
+```
+Prepare the workspace snapshot with post-fit values
+```
+combine -M MultiDimFit --saveWorkspace -n teststep1 data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.root
+```
+or alternatively with signal strength set to 0
+```
+combine -M MultiDimFit --saveWorkspace -n test_rnought_step1 data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.root --setPhysicsModelParameters lumiscale=10,r=0 --freezeNuisances r
+```
+Calculate Asymptotic limit
+```
+combine -M Asymptotic -d higgsCombineteststep1.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n teststep2 --freezeNuisances all --run expected
+```
+
+To get/set parameter value in the workspace use:
+```
+root -l file.root
+
+root [0] w->getSnapshot("MultiDimFit")->getRealValue("ttGenerator")
+```

@@ -474,7 +474,7 @@ Prepare the workspace snapshot with post-fit values
 ```
 combine -M MultiDimFit --saveWorkspace -n teststep1 data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.root
 ```
-or alternatively with signal strength set to 0
+or alternatively with signal strength set to 0 (THIS IS WRONG. DON'T DO THIS! Just for illustration how to fix parameters in the fit)
 ```
 combine -M MultiDimFit --saveWorkspace -n test_rnought_step1 data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.root --setPhysicsModelParameters lumiscale=10,r=0 --freezeNuisances r
 ```
@@ -488,4 +488,60 @@ To get/set parameter value in the workspace use:
 root -l file.root
 
 root [0] w->getSnapshot("MultiDimFit")->getRealValue("ttGenerator")
+```
+
+
+
+Die 27 Sep 2016 21:31:34 CEST
+To extrapolate limit to higher luminosity values I will be using the following command
+```
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=1
+```
+
+To apply lumi scaling factor change
+```
+lumiscale=1
+```
+
+Extrapolation plots
+```
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=0.3846 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.1P0.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=1 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.2P6.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=5 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.13P0.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=10 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.26P0.combine.out
+```
+~~~~~ FIT DOESN'T CONVERGE IN THIS CASE (SEE OUTPUT) ~~~~~~
+```
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=15 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.39P0.combine.out
+```
+
+====================================
+TOP only extrapolation
+====================================
+ACHTUNG!!!!
+renaming folders with input files
+mv data/v0.4.1/pascards_extrapolation/ data/v0.4.1/extrapolation
+```
+text2workspace.py data/v0.4.1/extrapolation/TOP-combined.txt
+
+combine -M MultiDimFit --saveWorkspace -n TOP-ROOTNOFREEZE data/v0.4.1/extrapolation/TOP-combined.root
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=0.3846 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.1P0.combine.out
+
+ombine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=1 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.2P6.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=5 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.13P0.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=10 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.26P0.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=15 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.39P0.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=30 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.78P0.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=50 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.130P0.combine.out
+
+combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=100 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.260P0.combine.out
 ```

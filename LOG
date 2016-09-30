@@ -545,3 +545,17 @@ combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w 
 
 combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=100 | tail -n11|head -n-1 > data/v0.4.1/TOP-combined.txt.lumi.260P0.combine.out
 ```
+
+
+======================================================================================================================================================================
+Fixing SUSY stat nuisance to nominal values
+======================================================================================================================================================================
+After adding nuisance group to the datacard data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor
+e.g.
+sus_stat group += xg_stat_lowlow8
+for all processes and all bins i.e. sus_stat group += *_stat_*
+```
+text2workspace.py data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor -o data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.groups.root
+combine -M MultiDimFit --saveWorkspace -n susstatstep1 data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.groups.root
+
+```

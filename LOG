@@ -632,3 +632,8 @@ Expected 50.0%: r < 5.7969
 Expected 84.0%: r < 5.9124
 Expected 97.5%: r < 6.1183
 
+
+Postfit/Prefit extrapolation plot
+```
+./util/make_expected_vs_lumiplot.py -i1 ./util/graph_TOP_SUS_combo_statonly_postfitfix.dat -i2 ./util/graph_TOP_SUS_combo_statonly_prefitfix.dat -l1 postfit -l2 prefit -f --lumilabel="1-26 fb^{-1}"
+```

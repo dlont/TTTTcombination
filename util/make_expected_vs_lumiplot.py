@@ -10,19 +10,28 @@ def parseArgs():
     parser = argparse.ArgumentParser(description='Make extrapolation plot.')
     parser.add_argument('-i1','--input1', help='input file name',required=True)
     parser.add_argument('-i2','--input2', help='input file name',required=False)
+    parser.add_argument('-l1','--label1', help='legend entry 1',required=True)
+    parser.add_argument('-l2','--label2', help='legend entry 2',required=False)
+    parser.add_argument('--lumilabel', help='lumi range',required=False)
+    parser.add_argument('-f','--fit', dest='do_fit', help='Perform ~1/Sqrt(N) fit. Assume unit weights', action='store_true', required=False)
+    parser.set_defaults(lumilabel='1-260 fb^{-1}',do_fit=False)
 
     args = parser.parse_args()
     return args
 
 def main(args):
+    #set ROOT global options
+    rt.gStyle = rt.gROOT.GetGlobal( "gStyle", 1 )
+    rt.gStyle.SetOptFit(0)
+    rt.gStyle.SetOptStat(0)
+
     #set the tdr style
     tdrstyle.setTDRStyle()
 
     #change the CMS_lumi variables (see CMS_lumi.py)
     CMS_lumi.lumi_7TeV = "2.6-2600 fb^{-1}"
     CMS_lumi.lumi_8TeV = "2.6-2600 fb^{-1}"
-    #CMS_lumi.lumi_13TeV = "1-1000 fb^{-1}"
-    CMS_lumi.lumi_13TeV = "1-260 fb^{-1}"
+    CMS_lumi.lumi_13TeV = args.lumilabel
     CMS_lumi.writeExtraText = 1
     #CMS_lumi.extraText = "Simulation Preliminary"
     CMS_lumi.extraText = "Simulation"
@@ -58,10 +67,15 @@ def main(args):
     canvas.SetBottomMargin( B/H )
     canvas.SetTickx(0)
     canvas.SetTicky(0)
-    canvas.SetLogx(1)
+#    canvas.SetLogx(1)
     canvas.SetGridy()
 
+    funcInvSqrt  = rt.TF1("funcInvSqrt","[0]/TMath::Sqrt(x)", 0.1, 30.)
+
     graph_a = rt.TGraphErrors(args.input1)
+    if args.do_fit: 
+	print "Fit " +  args.input1
+	graph_a.Fit(funcInvSqrt, "W")
     rt.SetOwnership(graph_a, False)
     graph_a.SetFillColor(rt.kBlue+2)
     graph_a.SetFillStyle(3005)
@@ -73,6 +87,9 @@ def main(args):
 
     if args.input2 != None:
 	graph_a1 = rt.TGraphErrors(args.input2)
+	if args.do_fit: 
+		print "Fit " + args.input2
+		graph_a1.Fit(funcInvSqrt,"W")
 	rt.SetOwnership(graph_a1, False)
 	graph_a1.SetFillColor(rt.kGreen+1)
 	graph_a1.SetFillStyle(3004)
@@ -83,10 +100,10 @@ def main(args):
 	graph_b1.SetLineWidth(2)
 
     mg = rt.TMultiGraph()
-    mg.Add(graph_a,'E3')
-    mg.Add(graph_b,'CX')
-    mg.Add(graph_a1,'E3')
-    mg.Add(graph_b1,'CX')
+    mg.Add(graph_a,'*E3')
+    mg.Add(graph_b,'X')
+    mg.Add(graph_a1,'*E3')
+    mg.Add(graph_b1,'X')
     mg.Draw("A")
 
     theline2 = rt.TLine(2.6,0,2.6,0.8*graph_a.GetHistogram().GetMaximum())
@@ -98,6 +115,7 @@ def main(args):
     theline3.SetLineStyle(3)
 
     theline = rt.TF1("theline","1",0,1000)
+    theline.SetLineColor(rt.kBlack)
     rt.SetOwnership(theline, False)
     theline.Draw("same")
     theline2.Draw("same")
@@ -126,8 +144,17 @@ def main(args):
     #legend.AddEntry(graph_b,"2015 data","p")
     #legend.AddEntry(graph_a,"lepton+jets","lf")
     #legend.AddEntry(graph_a,"dilepton","lf")
-    legend.AddEntry(graph_a,"combined limit (expected) TOP-SUS","lf")
-    legend.AddEntry(graph_a1,"combined limit (expected) TOP","lf")
+    #legend.AddEntry(graph_a,"combined limit (expected) TOP-SUS","lf")
+    #legend.AddEntry(graph_a1,"combined limit (expected) TOP","lf")
+    if args.label1 != None:
+    	legend.AddEntry(graph_a,args.label1,"lf")
+    else:
+	legend.AddEntry(graph_a,"combined limit (expected) TOP-SUS","lf")
+    if args.input2 != None:
+	if args.label2 != None:
+		legend.AddEntry(graph_a1,args.label2,"lf")
+	else:
+		legend.AddEntry(graph_a1,"combined limit (expected) TOP","lf")
     legend.AddEntry(theline,"SM t#bar{t}t#bar{t}","l")
     legend.AddEntry(theline2,"2015 integrated lumi","l")
     #legend.AddEntry(theline3,"2016 integrated lumi (expected)","l")
@@ -147,7 +174,7 @@ def main(args):
     canvas.Update()
     canvas.RedrawAxis()
 
-    canvas.SaveAs("combined_limitvslumi.pdf")
+    canvas.SaveAs("combined_limitvslumi_statonly.pdf")
 
     canvas.Modified()
     canvas.Update()

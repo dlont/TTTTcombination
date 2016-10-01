@@ -1,0 +1,12 @@
+compare.nuissance.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineROOT.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineROOTFREEZE.MultiDimFit.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineROOTNOFREEZE.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineTXT.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineTest.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineextrap.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombinesusstat_fix_step1.MultiDimFit.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombinesusstatstep1.MultiDimFit.mH120.root filter=lfs diff=lfs merge=lfs -text
+higgsCombineteststep2.Asymptotic.mH120.root filter=lfs diff=lfs merge=lfs -text

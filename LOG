@@ -517,6 +517,30 @@ combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --
 ```
 combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=15 | tail -n11|head -n-1 > data/v0.4.1/pascards_extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.39P0.combine.out
 ```
+output:
+Median for expected limits: 5.10938
+Sigma  for expected limits: 2.60687
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 5.0096
+Expected 16.0%: r < 5.0345
+Expected 50.0%: r < 5.1094
+Expected 84.0%: r < 5.2112
+Expected 97.5%: r < 5.3927
+
+After freezing all nuissances a reasonable limit can be obtained
+```
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=15 --freezeNuisances all | tail -n11|head -n-1
+```
+Median for expected limits: 0.541016
+Sigma  for expected limits: 0.276033
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 0.2441
+Expected 16.0%: r < 0.3543
+Expected 50.0%: r < 0.5410
+Expected 84.0%: r < 0.8235
+Expected 97.5%: r < 1.1926
 
 ====================================
 TOP only extrapolation
@@ -547,6 +571,30 @@ combine -M Asymptotic -d higgsCombineTOP-ROOTNOFREEZE.MultiDimFit.mH120.root -w 
 ```
 
 
+Sam 01 Okt 2016 23:33:16 CEST
+Statistics only extrapolation. Systematics freezing.
+========================================================================================================================================================================
+Post-fit
+```
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=0.3846 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.1P0.statonly.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=1 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.2P6.statonly.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=5 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.13P0.statonly.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTNOFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=10 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.26P0.statonly.combine.out
+```
+Pre-fit
+```
+combine -M Asymptotic -d higgsCombineROOTFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=0.3846 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.1P0.statonlyprefit.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=1 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.2P6.statonlyprefit.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=5 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.13P0.statonlyprefit.combine.out
+
+combine -M Asymptotic -d higgsCombineROOTFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=10 --freezeNuisances all| tail -n11|head -n-1 > data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.lumi.26P0.statonlyprefit.combine.out
+```
+
 ======================================================================================================================================================================
 Fixing SUSY stat nuisance to nominal values
 ======================================================================================================================================================================
@@ -557,5 +605,30 @@ for all processes and all bins i.e. sus_stat group += *_stat_*
 ```
 text2workspace.py data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor -o data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.groups.root
 combine -M MultiDimFit --saveWorkspace -n susstatstep1 data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.groups.root
-
+combine -M MultiDimFit --saveWorkspace -n susstat_fix_step1 data/v0.4.1/extrapolation/TOP-SUS-combined.txt.btagUncor.groups.root --freezeNuisanceGroups sus_stat
 ```
+
+Attempt to fit without SUSY stats wasn't successful
+```
+combine -M Asymptotic -d higgsCombinesusstat_fix_step1.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=15 --freezeNuisanceGroup sus_stat
+```
+fails with the following output
+Will compute expected limit(s) using minimizer Minuit2 with strategy 0 and tolerance 0.01
+  [WARNING] Found [WZ] at boundary. 
+  [WARNING] Found [fakes] at boundary. 
+  [WARNING] Found [fakes_EWK] at boundary. 
+  [WARNING] Found [heavyFlav] at boundary. 
+  [WARNING] Found [leptonSF] at boundary. 
+  [WARNING] Found [lumi] at boundary. 
+  [WARNING] Found [ttMEScale] at boundary. 
+WARNING: Best fit of asimov dataset is at r = 0.020242 (0.001012 times rMax), while it should be at zero
+Median for expected limits: 5.79688
+Sigma  for expected limits: 2.95764
+
+ -- Asymptotic -- 
+Expected  2.5%: r < 5.6837
+Expected 16.0%: r < 5.7120
+Expected 50.0%: r < 5.7969
+Expected 84.0%: r < 5.9124
+Expected 97.5%: r < 6.1183
+

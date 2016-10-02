@@ -637,3 +637,13 @@ Postfit/Prefit extrapolation plot
 ```
 ./util/make_expected_vs_lumiplot.py -i1 ./util/graph_TOP_SUS_combo_statonly_postfitfix.dat -i2 ./util/graph_TOP_SUS_combo_statonly_prefitfix.dat -l1 postfit -l2 prefit -f --lumilabel="1-26 fb^{-1}"
 ```
+
+
+Son 02 Okt 2016 13:52:21 CEST
+=================================================================================================================================================================
+TOP only with prefit nuisances
+=================================================================================================================================================================
+```
+combine -M MultiDimFit --saveWorkspace -n TOP-ROOTFREEZE data/v0.4.1/extrapolation/TOP-combined.root --freezeNuisances all
+combine -M Asymptotic -d higgsCombineTOP-ROOTFREEZE.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" -n extrap --run expected --setPhysicsModelParameters lumiscale=5
+```

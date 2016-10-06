@@ -67,7 +67,7 @@ def main(args):
     canvas.SetBottomMargin( B/H )
     canvas.SetTickx(0)
     canvas.SetTicky(0)
-#    canvas.SetLogx(1)
+    canvas.SetLogx(1)
     canvas.SetGridy()
 
     funcInvSqrt  = rt.TF1("funcInvSqrt","[0]/TMath::Sqrt(x)", 0.1, 30.)
